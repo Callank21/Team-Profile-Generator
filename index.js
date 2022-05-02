@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const generateClass = require('./src/generateHTML');
 
 const questions = [
     {
@@ -48,11 +49,65 @@ const questions = [
     }
     ];
 
+function delegateRole(role) {
+    switch (role) {
+        case 'Manager':
+            inquirer
+                .prompt({
+                    type: 'input',
+                    name: 'officeNumber',
+                    message: 'Please enter the number for your office:',
+                    validate: nameInput => {
+                            if (nameInput) {
+                                return true;
+                            } else {
+                                console.log('Please enter your office number!');
+                                return false;
+                            }
+                        }
+                }).then((data) => {
+                    console.log(data);
+                });
+            break;
+            case 'Engineer':
+            inquirer
+                .prompt({
+                    type: 'input',
+                    name: 'github',
+                    message: 'Please enter your github username:',
+                    validate: nameInput => {
+                            if (nameInput) {
+                                return true;
+                            } else {
+                                console.log('Please enter your username!');
+                                return false;
+                            }
+                        }
+                });
+            break;
+            case 'Intern':
+            inquirer
+                .prompt({
+                    type: 'input',
+                    name: 'school',
+                    message: 'Please enter your school:',
+                    validate: nameInput => {
+                            if (nameInput) {
+                                return true;
+                            } else {
+                                console.log('Please enter the school you attend!');
+                                return false;
+                            }
+                        }
+                });
+            break;
+    }
+}
+
 function questionPrompt() {
-    inquirer
-        .prompt({ questions })
-            .then(({ role }) => {
-                return role;
-            });
+    const employee = inquirer.prompt(questions);
+    employee.then(data => {
+        generateClass(data,delegateRole(data.role));
+    });
 }
 questionPrompt();
